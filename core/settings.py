@@ -1,17 +1,19 @@
 import os
 from pathlib import Path
+import environ
+from django.contrib.messages import constants as message_constants
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+env=environ.Env()
+environ.Env.read_env()
 
-SECRET_KEY = 'django-insecure-6y9w%6!knw2)a0(cq4(#ke+h%t5ggruo)ty4-7flo2z#425d)9'
+SECRET_KEY = env("SECRET_KEY")
 
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -22,8 +24,14 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'teams.apps.TeamsConfig',
     'cars.apps.CarsConfig',
+    'account.apps.AccountConfig',
 
     # 3rd Party Apps
+    'django_cleanup',
+    'admin_interface',
+    'colorfield',
+    
+    'django.contrib.admin',
 
 ]
 
@@ -105,4 +113,17 @@ STATICFILES_DIRS=[
 MEDIA_ROOT = os.path.join(BASE_DIR,"media")
 MEDIA_URL  = "/media/"
 
+EMAIL_HOST          = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_PORT          = 587
+EMAIL_HOST_USER     = env("EMAIL_HOST")
+EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD")
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+
+MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
+                message_constants.INFO: 'info',
+                message_constants.SUCCESS: 'success',
+                message_constants.WARNING: 'warning',
+	            message_constants.ERROR: 'danger',}
