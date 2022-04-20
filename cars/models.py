@@ -85,7 +85,7 @@ class CarModel(models.Model):
         ('6', '6'),
     )
     title        = models.CharField(verbose_name=_("Car Title"),max_length=100)
-    slug         = models.SlugField(verbose_name=_("Slug"),null=True,unique=True,editable=False)
+    slug         = models.SlugField(verbose_name=_("Slug"),unique=True,editable=False)
     city         = models.CharField(verbose_name=_("City"),max_length=100)
     state        = models.CharField(verbose_name=_("State"),max_length=100,choices=STATE_CHOICES)
     description  = RichTextField(verbose_name=_("Description"))
