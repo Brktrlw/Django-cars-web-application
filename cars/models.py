@@ -3,6 +3,9 @@ from django.utils.translation import gettext_lazy as _
 from datetime import datetime
 from ckeditor.fields import RichTextField
 from multiselectfield import MultiSelectField
+from unidecode import unidecode
+from django.template.defaultfilters import slugify
+
 
 class CarModel(models.Model):
     STATE_CHOICES = (
@@ -82,6 +85,7 @@ class CarModel(models.Model):
         ('6', '6'),
     )
     title        = models.CharField(verbose_name=_("Car Title"),max_length=100)
+    slug         = models.SlugField(verbose_name=_("Slug"),null=True,unique=True,editable=False)
     city         = models.CharField(verbose_name=_("City"),max_length=100)
     state        = models.CharField(verbose_name=_("State"),max_length=100,choices=STATE_CHOICES)
     description  = RichTextField(verbose_name=_("Description"))
@@ -110,6 +114,11 @@ class CarModel(models.Model):
     created_date = models.DateTimeField(verbose_name=_("Created Date"),auto_now_add=True)
     passengers   = models.IntegerField(verbose_name=_("Passengers"))
 
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        if self.id is None:
+            self.slug = slugify(unidecode(self.title))
+        super(CarModel, self).save()
 
     def __str__(self):
         return self.title

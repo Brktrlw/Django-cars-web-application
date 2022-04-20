@@ -170,7 +170,7 @@
                         </div>
                         <div class="detail">
                             <h1 class="title">
-                                <a href="car-details.html">{{ featured_car.title }}</a>
+                                <a href="{% url 'url_carDetail' featured_car.slug %}">{{ featured_car.title }}</a>
                             </h1>
                             <div class="location">
                                 <a href="car-details.html">
@@ -268,7 +268,7 @@
                     </div>
                     <div class="detail">
                         <h1 class="title">
-                            <a href="">{{ latest_car.title }}</a>
+                            <a href="{% url 'url_carDetail' latest_car.slug %}">{{ latest_car.title }}</a>
                         </h1>
                         <div class="location">
                             <a href="car-details.html">
