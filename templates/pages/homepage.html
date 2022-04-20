@@ -162,7 +162,7 @@
                                 <a href="{% url 'url_carDetail' featured_car.slug %}">{{ featured_car.title }}</a>
                             </h1>
                             <div class="location">
-                                <a href="car-details.html">
+                                <a href="{% url 'url_carDetail' featured_car.slug %}">
                                     <i class="flaticon-pin"></i>{{ featured_car.state }}, {{ featured_car.city }}
                                 </a>
                             </div>

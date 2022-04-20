@@ -1,12 +1,22 @@
 from django.shortcuts import render
 from django.views.generic import (
-TemplateView,View,ListView,FormView
+TemplateView,View
 )
 from cars.models import CarModel
 from teams.models import TeamsModel
 
+class BaseSearchView(View):
+    def get_search_fields(self):
+        ctx = {
+        "model_fields"    : CarModel.objects.values("model").distinct("model"),
+        "city_fields"     : CarModel.objects.values("city").distinct("city"),
+        "year_fields"     : CarModel.objects.values("year").distinct("year"),
+        "body_fields"     : CarModel.objects.values("body_style").distinct("body_style"),
+        "transmission"    : CarModel.objects.values("transmission").distinct("transmission")
+        }
+        return ctx
 
-class HomePageView(View):
+class HomePageView(BaseSearchView):
     http_method_names = ["get"]
 
     def get(self,request):
@@ -17,15 +27,6 @@ class HomePageView(View):
             "search_fields" : self.get_search_fields()
         }
         return render(request,"pages/homepage.html",ctx)
-
-    def get_search_fields(self):
-        ctx = {
-        "model_fields"    : CarModel.objects.values("model").distinct("model"),
-        "city_fields"     : CarModel.objects.values("city").distinct("city"),
-        "year_fields"     : CarModel.objects.values("year").distinct("year"),
-        "body_fields"     : CarModel.objects.values("body_style").distinct("body_style")
-        }
-        return ctx
 
     def get_featured_cars(self):
         return CarModel.objects.filter(is_featured=True).order_by("-created_date")
