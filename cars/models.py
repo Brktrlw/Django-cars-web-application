@@ -88,7 +88,7 @@ class CarModel(models.Model):
     year         = models.IntegerField(verbose_name=_("Year"),choices=YEAR_CHOICES)
     model        = models.CharField(verbose_name=_("Model"),max_length=100)
     condition    = models.CharField(verbose_name=_("Condition"),max_length=100)
-    price        = models.FloatField(verbose_name=_("Price"))
+    price        = models.PositiveIntegerField(verbose_name=_("Price"))
     car_photo_1  = models.ImageField(verbose_name=_("Car Photo"),upload_to="cars/%Y/%m/%d/")
     car_photo_2  = models.ImageField(verbose_name=_("Car Photo"),upload_to="cars/%Y/%m/%d/",blank=True)
     car_photo_3  = models.ImageField(verbose_name=_("Car Photo"),upload_to="cars/%Y/%m/%d/",blank=True)

@@ -2,14 +2,26 @@ from django.shortcuts import render
 from django.views.generic import (
 TemplateView,View,ListView,FormView
 )
+from cars.models import CarModel
 from teams.models import TeamsModel
+
 
 class HomePageView(View):
     http_method_names = ["get"]
 
     def get(self,request):
-        ctx = {"team_members":self.get_team_members()}
+        ctx                  = {
+            "team_members"  : self.get_team_members(),
+            "featured_cars" : self.get_featured_cars(),
+            "latest_cars"   : self.get_latest_cars()
+        }
         return render(request,"pages/homepage.html",ctx)
+
+    def get_featured_cars(self):
+        return CarModel.objects.filter(is_featured=True).order_by("-created_date")
+
+    def get_latest_cars(self):
+        return CarModel.objects.all().order_by("-created_date")[:3]
 
     def get_team_members(self):
         return TeamsModel.objects.all()
