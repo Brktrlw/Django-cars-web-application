@@ -20,12 +20,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.sites',
 
     # My Apps
     'pages.apps.PagesConfig',
     'teams.apps.TeamsConfig',
     'cars.apps.CarsConfig',
-    'account.apps.AccountConfig',
 
     # 3rd Party Apps
     'django_cleanup',
@@ -33,7 +33,12 @@ INSTALLED_APPS = [
     'colorfield',
     'ckeditor',
     'django.contrib.admin',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -76,6 +81,12 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+#}
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -116,12 +127,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR,"media")
 MEDIA_URL  = "/media/"
 
 EMAIL_HOST          = "smtp.gmail.com"
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
+EMAIL_USE_TLS       = True
+EMAIL_USE_SSL       = False
 EMAIL_PORT          = 587
 EMAIL_HOST_USER     = env("EMAIL_HOST")
 EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD")
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND       = 'django.core.mail.backends.smtp.EmailBackend'
 
 
 MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
@@ -129,3 +140,8 @@ MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
                 message_constants.SUCCESS: 'success',
                 message_constants.WARNING: 'warning',
 	            message_constants.ERROR: 'danger',}
+SITE_ID = 1
+if not DEBUG:
+    AUTHENTICATION_BACKENDS = ['backends.email_backends.EmailBackend']
+
+LOGIN_REDIRECT_URL='url_homepage'
