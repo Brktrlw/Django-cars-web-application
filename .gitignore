@@ -116,3 +116,5 @@ dmypy.json
 media/
 *.iml
 .idea/
+backup_cars.sql
+data.csv

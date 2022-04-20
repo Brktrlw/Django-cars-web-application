@@ -13,9 +13,19 @@ class HomePageView(View):
         ctx                  = {
             "team_members"  : self.get_team_members(),
             "featured_cars" : self.get_featured_cars(),
-            "latest_cars"   : self.get_latest_cars()
+            "latest_cars"   : self.get_latest_cars(),
+            "search_fields" : self.get_search_fields()
         }
         return render(request,"pages/homepage.html",ctx)
+
+    def get_search_fields(self):
+        ctx = {
+        "model_fields"    : CarModel.objects.values("model").distinct("model"),
+        "city_fields"     : CarModel.objects.values("city").distinct("city"),
+        "year_fields"     : CarModel.objects.values("year").distinct("year"),
+        "body_fields"     : CarModel.objects.values("body_style").distinct("body_style")
+        }
+        return ctx
 
     def get_featured_cars(self):
         return CarModel.objects.filter(is_featured=True).order_by("-created_date")

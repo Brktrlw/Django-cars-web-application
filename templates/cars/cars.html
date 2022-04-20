@@ -1,6 +1,5 @@
 {% extends 'includes/base.html' %}
-{% load static %}
-
+{% load static humanize%}
 {% block content %}
 <div class="sub-banner overview-bgi">
     <div class="container breadcrumb-area">
@@ -22,36 +21,45 @@
                 <div class="row">
 
                     {# Car loop start #}
+                    {% for car in cars %}
                     <div class="col-lg-6 col-md-6">
                         <div class="car-box-3">
                             <div class="car-thumbnail">
-                                <a href="car-details.html" class="car-img">
+                                <a href="{% url 'url_carDetail' car.slug %}" class="car-img">
                                     <div class="tag">For Rent</div>
                                     <div class="price-box">
-                                        <span>$780.00</span>
+                                        <span>$ {{ car.price| intcomma }}</span>
                                     </div>
-                                    <img class="d-block w-100" src="img/car/car-1.jpg" alt="car">
+                                    <img class="d-block w-100" src="{{ car.car_photo_1.url }}" alt="car" style="min-height: 262px;max-height: 262px"    >
                                 </a>
                                 <div class="carbox-overlap-wrapper">
                                     <div class="overlap-box">
                                         <div class="overlap-btns-area">
                                             <div class="car-magnify-gallery">
-                                                <a href="img/car/car-1.jpg" class="overlap-btn">
+                                                <a href="{{ car.car_photo_1.url }}" class="overlap-btn">
                                                     <i class="fa fa-expand"></i>
-                                                    <img class="hidden" src="img/car/car-1.jpg">
+                                                    <img class="hidden" src="{{ car.car_photo_1.url }}" >
                                                 </a>
-                                                <a href="img/car/car-2.jpg" class="hidden" >
-                                                    <img class="hidden" src="img/car/car-2.jpg">
+                                                {% if car.car_photo_2 %}
+                                                <a href="{{ car.car_photo_2.url }}" class="hidden" >
+                                                    <img class="hidden" src="{{ car.car_photo_2.url }}">
                                                 </a>
-                                                <a href="img/car/car-3.jpg" class="hidden">
-                                                    <img class="hidden" src="img/car/car-3.jpg">
+                                                {% endif %}
+                                                {% if car.car_photo_3 %}
+                                                <a href="{{ car.car_photo_3.url }}" class="hidden">
+                                                    <img class="hidden" src="{{ car.car_photo_3.url }}">
                                                 </a>
-                                                <a href="img/car/car-4.jpg" class="hidden">
-                                                    <img class="hidden" src="img/car/car-4.jpg">
+                                                {% endif %}
+                                                {% if car.car_photo_4 %}
+                                                <a href="{{ car.car_photo_4.url }}" class="hidden">
+                                                    <img class="hidden" src="{{ car.car_photo_4.url }}">
                                                 </a>
-                                                <a href="img/car/car-5.jpg" class="hidden" >
-                                                    <img class="hidden" src="img/car/car-5.jpg">
+                                                {% endif %}
+                                                {% if car.car_photo_5 %}
+                                                <a href="{{ car.car_photo_5.url }}" class="hidden" >
+                                                    <img class="hidden" src="{{ car.car_photo_5.url }}">
                                                 </a>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>
@@ -59,41 +67,68 @@
                             </div>
                             <div class="detail">
                                 <h1 class="title">
-                                    <a href="car-details.html">Lamborghini Huracán</a>
+                                    <a href="{% url 'url_carDetail' car.slug %}">{{ car.title|title }}</a>
                                 </h1>
                                 <div class="location">
-                                    <a href="car-details.html">
-                                        <i class="flaticon-pin"></i>123 Kathal St. Tampa City,
+                                    <a href="{% url 'url_carDetail' car.slug %}">
+                                        <i class="flaticon-pin"></i>{{ car.state }} ,{{ car.city }}
                                     </a>
                                 </div>
                                 <ul class="facilities-list clearfix">
-                                    <li>Petrol</li>
-                                    <li>4,000 km</li>
-                                    <li>Manual</li>
-                                    <li>Sport</li>
-                                    <li>white</li>
-                                    <li>2020</li>
+                                    <li>{{ car.fuel_type|title }}</li>
+                                    <li>{{ car.miles|intcomma }} km</li>
+                                    <li>{{ car.transmission|title }}</li>
+                                    <li>{{ car.body_style|title }}</li>
+                                    <li>{{ car.color|title }}</li>
+                                    <li>{{ car.year }}</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
                     {# Car loop end #}
 
                 </div>
                 <!-- Page navigation start -->
                 <div class="pagination-box p-box-2 text-center">
                     <nav aria-label="Page navigation example">
+                        {% if is_paginated %}
                         <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number  }}"><i class="fa fa-angle-left"></i></a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <a class="page-link"><i class="fa fa-angle-left"></i></a>
+                                </li>
+                            {% endif %}
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.previous_page_number  }}">{{ page_obj.previous_page_number  }}</a>
+                                    </li>
+                                {% endif %}
+
+                                    <li class="page-item"><a class="page-link active" href="">{{ page_obj.number }}</a></li>
+                                   {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.next_page_number  }}">{{ page_obj.next_page_number  }}</a>
+                                    </li>
+                                {% endif %}
+
+
+                            {% if page_obj.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="#"><i class="fa fa-angle-left"></i></a>
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}"><i class="fa fa-angle-right"></i></a>
                             </li>
-                            <li class="page-item"><a class="page-link active" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#"><i class="fa fa-angle-right"></i></a>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href=""><i class="fa fa-angle-right"></i></a>
                             </li>
+                            {% endif %}
                         </ul>
+                        {% endif %} 
+
                     </nav>
                 </div>
             </div>
