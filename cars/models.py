@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from datetime import datetime
+from ckeditor.fields import RichTextField
+from multiselectfield import MultiSelectField
 
 class CarModel(models.Model):
     STATE_CHOICES = (
@@ -82,19 +84,21 @@ class CarModel(models.Model):
     title        = models.CharField(verbose_name=_("Car Title"),max_length=100)
     city         = models.CharField(verbose_name=_("City"),max_length=100)
     state        = models.CharField(verbose_name=_("State"),max_length=100,choices=STATE_CHOICES)
-    description  = models.TextField(verbose_name=_("Description"))
+    description  = RichTextField(verbose_name=_("Description"))
     year         = models.IntegerField(verbose_name=_("Year"),choices=YEAR_CHOICES)
     model        = models.CharField(verbose_name=_("Model"),max_length=100)
     condition    = models.CharField(verbose_name=_("Condition"),max_length=100)
-    price        = models.FloatField(verbose_name=_("Model"))
+    price        = models.FloatField(verbose_name=_("Price"))
     car_photo_1  = models.ImageField(verbose_name=_("Car Photo"),upload_to="cars/%Y/%m/%d/")
     car_photo_2  = models.ImageField(verbose_name=_("Car Photo"),upload_to="cars/%Y/%m/%d/",blank=True)
     car_photo_3  = models.ImageField(verbose_name=_("Car Photo"),upload_to="cars/%Y/%m/%d/",blank=True)
     car_photo_4  = models.ImageField(verbose_name=_("Car Photo"),upload_to="cars/%Y/%m/%d/",blank=True)
     car_photo_5  = models.ImageField(verbose_name=_("Car Photo"),upload_to="cars/%Y/%m/%d/",blank=True)
-    features     = models.CharField(verbose_name=_("Features"),max_length=100,choices=FEATURES_CHOICES)
+    features     = MultiSelectField(verbose_name=_("Features"),choices=FEATURES_CHOICES)
     body_style   = models.CharField(verbose_name=_("Body Style"),max_length=100)
+    engine       = models.CharField(verbose_name=_("Engine"),max_length=50,default="")
     transmission = models.CharField(verbose_name=_("Transmission"),max_length=100)
+    color        = models.CharField(verbose_name=_("Car Color"),max_length=50,default="")
     interior     = models.CharField(verbose_name=_("Interior"),max_length=100)
     miles        = models.IntegerField(verbose_name=_("Miles"))
     doors        = models.CharField(verbose_name=_("Doors"),max_length=10,choices=DOOR_CHOICES)

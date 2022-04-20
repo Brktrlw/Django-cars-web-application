@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'django_cleanup',
     'admin_interface',
     'colorfield',
-    
+    'ckeditor',
     'django.contrib.admin',
 
 ]
