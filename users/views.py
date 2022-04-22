@@ -1,5 +1,6 @@
-from django.views.generic import View,TemplateView,FormView
+from django.views.generic import View,TemplateView,FormView,ListView
 from .forms import RegisterForm
+from contact.models import ContactModel
 from django.shortcuts import redirect,render
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -44,8 +45,13 @@ class RegisterView(FormView):
         return redirect("url_homepage")
 
 
-class DashboardView(LoginRequiredMixin,TemplateView):
+class DashboardView(LoginRequiredMixin,ListView):
+    context_object_name = "contacts"
     template_name = "account/dashboard.html"
+
+    def get_queryset(self):
+        return ContactModel.objects.filter(user=self.request.user)
+
 
 
 
