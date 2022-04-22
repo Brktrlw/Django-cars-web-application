@@ -41,7 +41,7 @@
                             <i class="flaticon-lock"></i>
                         </div>
                         <div class="form-group mb-0 clearfix">
-                            <button type="submit" class="btn-md btn-theme float-left">Login</button>
+                            <button type="submit" class="btn-md btn-theme float-left btn-block">Login</button>
                         </div>
                         <div class="extra-login clearfix">
                             <span>Or Login With</span>
@@ -54,8 +54,10 @@
                             {% csrf_token %}
                             <li><a onclick="loginfacebook()" class="facebook-bg"><i class="fa fa-facebook facebook-i" style="color: white;"></i><span>Facebook</span></a></li>
                             </form>
-                                <li><a href="#" class="google-bg"><i class="fa fa-google google-i"></i><span>Google</span></a></li>
-                        </ul>
+                            <form id="glogin" action="{% provider_login_url 'google' %}" method="POST">
+                                {% csrf_token %}
+                                <li><a onclick="login_google();" class="google-bg"><i class="fa fa-google google-i"></i><span>Google</span></a></li>
+                        </form></ul>
 
                     <p>Don't have an account? <a href="{% url 'url_register' %}" class="thembo"> Register here</a></p>
                 </div>
@@ -68,7 +70,10 @@
     function loginfacebook() {
         form.submit();
     }
-
+    const form_google=document.getElementById("glogin")
+    function login_google() {
+        form_google.submit()
+    }
     </script>
 {% endblock content %}
 

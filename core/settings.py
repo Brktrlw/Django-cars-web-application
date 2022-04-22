@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'teams.apps.TeamsConfig',
     'cars.apps.CarsConfig',
+    'contact.apps.ContactConfig',
 
     # 3rd Party Apps
     'django_cleanup',

@@ -1,7 +1,7 @@
 {% extends 'includes/base.html' %}
 
 {% block content %}
-{% load humanize %}
+{% load humanize static %}
 
 <div class="sub-banner overview-bgi">
     <div class="container breadcrumb-area">
@@ -206,13 +206,14 @@
                         <div class="modal-content">
                           <div class="contact-dealer modal-header">
                             <!-- <h5 class="modal-title" id="inquiryModalLabel">Contact Dealer</h5> -->
-                            <img src="img/logos/logo-black-white.png">
+                            <img src="{% static 'img/logos/logo-black-white.png' %}">
                             <button type="button" class="close" data-dismiss="modal">
                               <span>&times;</span>
                             </button>
                           </div>
                           <div class="modal-body">
-                            <form action="#">
+                            <form action="{% url 'url_contact' %}" method="post">
+                                {% csrf_token %}
                                 <div class="form-group">
                                   <label for="name" class="col-form-label">Hello, My Name is</label>
                                   <div class="row">
@@ -234,7 +235,8 @@
                                     </div>
 
                                 <div class="form-group">
-                                  <input type="text" name="car_title" class="form-control" value="LAMBORGHINI HURACÁN." readonly>
+                                  <input type="text" name="car_title" class="form-control" value="{{ car.title }}" readonly>
+                                  <input type="hidden" name="car_slug" class="form-control" value="{{ car.slug }}" readonly>
                                 </div>
 
                                 <div class="form-group">
